@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI 챗봇으로 이동 중...</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Noto Sans KR", sans-serif;
+        background: #f8f9fa;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        text-align: center;
+        padding: 3rem 2rem;
+        max-width: 500px;
+      }
+
+      .loader {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 2rem;
+        border: 4px solid #e2e8f0;
+        border-top-color: #0066b1;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1a1a2e;
+        margin-bottom: 0.75rem;
+      }
+
+      p {
+        color: #64748b;
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+
+      .bot-name {
+        color: #0066b1;
+        font-weight: 600;
+      }
+
+      .error-container {
+        display: none;
+      }
+
+      .error-container.show {
+        display: block;
+      }
+
+      .error-icon {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 1.5rem;
+        background: #fef2f2;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75rem;
+      }
+
+      .error-container h1 {
+        color: #dc2626;
+      }
+
+      .bot-list {
+        margin-top: 2rem;
+        text-align: left;
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      }
+
+      .bot-list h3 {
+        font-size: 0.9rem;
+        color: #64748b;
+        margin-bottom: 1rem;
+        font-weight: 500;
+      }
+
+      .bot-list ul {
+        list-style: none;
+      }
+
+      .bot-list li {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      .bot-list li:last-child {
+        border-bottom: none;
+      }
+
+      .bot-list code {
+        background: #f1f5f9;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        color: #0066b1;
+      }
+
+      .bot-list span {
+        color: #64748b;
+        font-size: 0.9rem;
+        margin-left: 8px;
+      }
+
+      .back-link {
+        display: inline-block;
+        margin-top: 2rem;
+        color: #0066b1;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .back-link:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 로딩 화면 -->
+    <div class="container" id="loading">
+      <div class="loader"></div>
+      <h1>AI 챗봇으로 이동 중</h1>
+      <p>
+        <span class="bot-name" id="bot-name">챗봇</span>을 불러오고 있습니다...
+      </p>
+    </div>
+
+    <!-- 에러 화면 -->
+    <div class="container error-container" id="error">
+      <div class="error-icon">⚠️</div>
+      <h1>챗봇을 찾을 수 없습니다</h1>
+      <p>
+        유효하지 않은 챗봇 ID입니다.<br />아래 목록에서 올바른 ID를
+        확인해주세요.
+      </p>
+
+      <div class="bot-list">
+        <h3>사용 가능한 챗봇 ID</h3>
+        <ul>
+          <li><code>assist</code> <span>만능비서</span></li>
+          <li><code>findvip</code> <span>로열 고객 찾기</span></li>
+          <li><code>msg</code> <span>캠페인 메시지 메이커</span></li>
+          <li><code>coach</code> <span>코칭 파트너</span></li>
+          <li><code>report</code> <span>매출 진척 보고서</span></li>
+          <li><code>tech-touareg</code> <span>기술 Q&A - 투아렉</span></li>
+          <li><code>tech-atlas</code> <span>기술 Q&A - 아틀라스</span></li>
+          <li><code>tech-golf</code> <span>기술 Q&A - 골프</span></li>
+          <li><code>tech-id4</code> <span>기술 Q&A - ID.4</span></li>
+          <li><code>tech-id5</code> <span>기술 Q&A - ID.5</span></li>
+          <li><code>tech-a5</code> <span>기술 Q&A - A5</span></li>
+          <li><code>tech-a6</code> <span>기술 Q&A - A6</span></li>
+          <li><code>tech-a6-e</code> <span>기술 Q&A - A6(e-tron)</span></li>
+          <li><code>tech-q4-e</code> <span>기술 Q&A - Q4(e-tron)</span></li>
+          <li><code>tech-q5</code> <span>기술 Q&A - Q5</span></li>
+          <li><code>tech-q6-e</code> <span>기술 Q&A - Q6(e-tron)</span></li>
+          <li><code>tech-q8</code> <span>기술 Q&A - Q8</span></li>
+          <li><code>tech-etron</code> <span>기술 Q&A - E-tron</span></li>
+        </ul>
+      </div>
+
+      <a href="index.html" class="back-link">← 메인으로 돌아가기</a>
+    </div>
+
+    <script>
+      // 챗봇 매핑 데이터
+      const bots = {
+        assist: {
+          name: "만능비서",
+          url: "https://chatgpt.com/g/g-692f145675988191b8bd1d048be75dfd-manneungbiseo-hoeyi-jeongributeo-bogoyong-katog-jagseong-meil-jagseongggaji",
+        },
+        findvip: {
+          name: "로열 고객 찾기",
+          url: "https://chatgpt.com/g/g-69304ae9633881918749499187ba558f-bangmun-maecul-gijun-royeol-gogaeg-cajgi",
+        },
+        msg: {
+          name: "캠페인 메시지 메이커",
+          url: "https://chatgpt.com/g/g-6930148f498c819180fb07ba2f5bd8a3-kaempein-mesiji-meikeo",
+        },
+        coach: {
+          name: "코칭 파트너",
+          url: "https://chatgpt.com/g/g-692eeed0d88481919dc4eb334af597cf-jigweon-gwanrireul-dobneun-kocing-pateuneo-jigweon-pideubaeg-myeondam-donggibuyeo-myeonjeobggaji",
+        },
+        report: {
+          name: "매출 진척 보고서",
+          url: "https://chatgpt.com/g/g-692fe9e21b908191b1f5aaabc165a02c-maecul-jinceog-bogoseo-jadonghwabos",
+        },
+        "tech-touareg": {
+          name: "기술 Q&A - 폭스바겐 투아렉",
+          url: "https://chatgpt.com/g/g-6930353094988191b4a9831aa99cfa97-vw-touareg-cajongbyeol-gisul-q-a-caesbos",
+        },
+        "tech-atlas": {
+          name: "기술 Q&A - 폭스바겐 아틀라스",
+          url: "https://chatgpt.com/g/g-6930353094988191b4a9831aa99cfa97-vw-touareg-cajongbyeol-gisul-q-a-caesbos",
+        },
+        "tech-golf": {
+          name: "기술 Q&A - 폭스바겐 골프",
+          url: "https://chatgpt.com/g/g-6930353094988191b4a9831aa99cfa97-vw-touareg-cajongbyeol-gisul-q-a-caesbos",
+        },
+        "tech-id4": {
+          name: "기술 Q&A - 폭스바겐 ID.4",
+          url: "https://chatgpt.com/g/g-6930353094988191b4a9831aa99cfa97-vw-touareg-cajongbyeol-gisul-q-a-caesbos",
+        },
+        "tech-id5": {
+          name: "기술 Q&A - 폭스바겐 ID.5",
+          url: "https://chatgpt.com/g/g-6930353094988191b4a9831aa99cfa97-vw-touareg-cajongbyeol-gisul-q-a-caesbos",
+        },
+        "tech-a5": {
+          name: "기술 Q&A - 아우디 A5",
+          url: "https://chatgpt.com/g/g-6930353094988191b4a9831aa99cfa97-vw-touareg-cajongbyeol-gisul-q-a-caesbos",
+        },
+        "tech-a6": {
+          name: "기술 Q&A - 아우디 A6",
+          url: "https://chatgpt.com/g/g-6930353094988191b4a9831aa99cfa97-vw-touareg-cajongbyeol-gisul-q-a-caesbos",
+        },
+        "tech-a6-e": {
+          name: "기술 Q&A - 아우디 A6(e-tron)",
+          url: "https://chatgpt.com/g/g-6930353094988191b4a9831aa99cfa97-vw-touareg-cajongbyeol-gisul-q-a-caesbos",
+        },
+        "tech-q4-e": {
+          name: "기술 Q&A - 아우디 Q4(e-tron)",
+          url: "https://chatgpt.com/g/g-6930353094988191b4a9831aa99cfa97-vw-touareg-cajongbyeol-gisul-q-a-caesbos",
+        },
+        "tech-q5": {
+          name: "기술 Q&A - 아우디 Q5",
+          url: "https://chatgpt.com/g/g-6930353094988191b4a9831aa99cfa97-vw-touareg-cajongbyeol-gisul-q-a-caesbos",
+        },
+        "tech-q6-e": {
+          name: "기술 Q&A - 아우디 Q6(e-tron)",
+          url: "https://chatgpt.com/g/g-6930353094988191b4a9831aa99cfa97-vw-touareg-cajongbyeol-gisul-q-a-caesbos",
+        },
+        "tech-q8": {
+          name: "기술 Q&A - 아우디 Q8",
+          url: "https://chatgpt.com/g/g-6930353094988191b4a9831aa99cfa97-vw-touareg-cajongbyeol-gisul-q-a-caesbos",
+        },
+        "tech-etron": {
+          name: "기술 Q&A - 아우디 E-tron",
+          url: "https://chatgpt.com/g/g-6930353094988191b4a9831aa99cfa97-vw-touareg-cajongbyeol-gisul-q-a-caesbos",
+        },
+      };
+
+      // URL 파라미터에서 id 값 가져오기
+      const params = new URLSearchParams(window.location.search);
+      const botId = params.get("id");
+
+      const loadingEl = document.getElementById("loading");
+      const errorEl = document.getElementById("error");
+      const botNameEl = document.getElementById("bot-name");
+
+      if (botId && bots[botId]) {
+        // 유효한 챗봇 ID인 경우
+        const bot = bots[botId];
+        botNameEl.textContent = bot.name;
+
+        // 1초 후 리다이렉트 (로딩 화면을 잠시 보여주기 위해)
+        setTimeout(() => {
+          window.location.href = bot.url;
+        }, 800);
+      } else {
+        // 유효하지 않은 ID인 경우
+        loadingEl.style.display = "none";
+        errorEl.classList.add("show");
+      }
+    </script>
+  </body>
+</html>
