@@ -281,11 +281,7 @@
         // 유효한 챗봇 ID인 경우
         const bot = bots[botId];
         botNameEl.textContent = bot.name;
-
-        // 리다이렉트
-        setTimeout(() => {
-          window.location.href = bot.url;
-        }, 10);
+        window.location.href = bot.url;
       } else {
         // 유효하지 않은 ID인 경우
         loadingEl.style.display = "none";
