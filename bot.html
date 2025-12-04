@@ -282,10 +282,10 @@
         const bot = bots[botId];
         botNameEl.textContent = bot.name;
 
-        // 1초 후 리다이렉트 (로딩 화면을 잠시 보여주기 위해)
+        // 리다이렉트
         setTimeout(() => {
           window.location.href = bot.url;
-        }, 800);
+        }, 10);
       } else {
         // 유효하지 않은 ID인 경우
         loadingEl.style.display = "none";
